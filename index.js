@@ -1,4 +1,4 @@
-const apiKey = "afy1M9Nf1jmcMEeKNqm2cAYboPQRjJQCfihhnAP4"
+import {Api as apiKey} from "./config.js"
 
 const imgContainer = document.getElementById("imgContainer")
 
