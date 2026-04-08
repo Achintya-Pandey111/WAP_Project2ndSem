@@ -8,17 +8,20 @@
 </head>
 <body>
 
-
   <video autoplay muted loop id="bgVideo">
     <source src="./backgroundVideo/10343918-hd_1920_1080_24fps.mp4" type="video/mp4">
   </video>
 
-
   <div class="controls">
     <input type="date" id="dateInput" class="date-input">
     <button id="btn">Get APOD</button>
-  </div>
 
+    <select id="sortSelect" class="date-input">
+      <option value="new">Newest</option>
+      <option value="old">Oldest</option>
+      <option value="az">A-Z</option>
+    </select>
+  </div>
 
   <div id="imgContainer"></div>
 
