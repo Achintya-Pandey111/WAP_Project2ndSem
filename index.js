@@ -29,34 +29,43 @@ async function apod() {
     const url = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}&date=${dateInput}`;
 
     try {
-        const res = await fetch(url);
-        const data = await res.json();
+    const res = await fetch(url);
 
-        if (data.media_type === "image") {
-            imgContainer.innerHTML = `
-                <button onclick="location.reload()">⬅ Back</button>
-                <h2 class="title">${data.title}</h2>
-                <img class="apod-img" src="${data.url}" loading="lazy">
-                <p class="description">${data.explanation}</p>
-            `;
 
-            const img = document.querySelector(".apod-img");
-            img.onload = () => img.classList.add("loaded");
-        }
-
-        else if (data.media_type === "video") {
-            imgContainer.innerHTML = `
-                <button onclick="location.reload()">⬅ Back</button>
-                <h2 class="title">${data.title}</h2>
-                <iframe src="${data.url}" allowfullscreen></iframe>
-                <p class="description">${data.explanation}</p>
-            `;
-        }
-
-    } catch (err) {
-        imgContainer.innerHTML = `<p>Error loading</p>`;
-        console.error(err);
+    if (!res.ok) {
+        throw new Error(`API Error: ${res.status}`);
     }
+
+    const data = await res.json();
+
+    if (data.media_type === "image") {
+        imgContainer.innerHTML = `
+            <button onclick="location.reload()">⬅ Back</button>
+            <h2 class="title">${data.title}</h2>
+            <img class="apod-img" src="${data.url}" loading="lazy">
+            <p class="description">${data.explanation}</p>
+        `;
+
+        const img = document.querySelector(".apod-img");
+        img.onload = () => img.classList.add("loaded");
+    }
+
+    else if (data.media_type === "video") {
+        imgContainer.innerHTML = `
+            <button onclick="location.reload()">⬅ Back</button>
+            <h2 class="title">${data.title}</h2>
+            <iframe src="${data.url}" allowfullscreen></iframe>
+            <p class="description">${data.explanation}</p>
+        `;
+    }
+
+} catch (err) {
+    imgContainer.innerHTML = `
+        <p>⚠️ NASA API is busy. Please try again.</p>
+        <button onclick="apod()">Retry</button>
+    `;
+    console.error(err);
+}
 }
 document.getElementById("btn").addEventListener("click", apod)
 
@@ -129,4 +138,6 @@ document.getElementById("sortSelect").addEventListener("change", (e) => {
   sortGallery(e.target.value)
 })
 
+
 loadGallery();
+
